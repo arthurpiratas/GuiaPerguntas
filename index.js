@@ -1,7 +1,10 @@
 const express = require('express')
 const app = express()
 const connection = require("./database/database")
-const perguntaModel = require("./database/Pergunta")
+const Pergunta = require("./database/Pergunta")
+
+var data = new Date() // Capture a data universal
+var dataBrasilia = new Date(data.valueOf() - data.getTimezoneOffset() * 60000)
 
 connection.authenticate().then(() =>{
     console.log("conexão feita com banco de dados")
@@ -28,9 +31,15 @@ app.get("/perguntar", (req, res) => {
 
 app.post("/salvarPergunta", (req, res) => {
     let titulo = req.body.titulo
-    let descricap = req.body.descricao
-
-
+    let descricao = req.body.descricao
+    Pergunta.create({
+        titulo: titulo,
+        descricao: descricao,
+        createdAt: dataBrasilia,
+        updatedAt: dataBrasilia
+    }).then(() => {
+        res.redirect('/')
+    })
 })
 
 app.listen(8000,()=>{console.log("App rodando!")})
