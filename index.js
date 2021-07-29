@@ -22,7 +22,14 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 app.get("/", (req, res) => {
-    res.render("index")
+
+    // select * from Perguntas
+    Pergunta.findAll({raw: true, order:[['id', 'DESC']]}).then((perguntas) => {
+        res.render("index", {
+            perguntas: perguntas
+        })
+    })
+    
 })
 
 app.get("/perguntar", (req, res) => {
@@ -32,13 +39,28 @@ app.get("/perguntar", (req, res) => {
 app.post("/salvarPergunta", (req, res) => {
     let titulo = req.body.titulo
     let descricao = req.body.descricao
-    Pergunta.create({
+    Pergunta.create({ // insert into
         titulo: titulo,
         descricao: descricao,
         createdAt: dataBrasilia,
         updatedAt: dataBrasilia
     }).then(() => {
         res.redirect('/')
+    })
+})
+
+app.get("/pergunta/:id", (req,res) => {
+    var id = req.params.id
+    Pergunta.findOne({
+        where: {id:id}
+    }).then(pergunta => {
+        if(pergunta != undefined){
+            res.render("pergunta",{
+                pergunta: pergunta
+            })
+        }else{
+            res.redirect("/")
+        }
     })
 })
 
