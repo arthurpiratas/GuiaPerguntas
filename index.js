@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const connection = require("./database/database")
 const Pergunta = require("./database/Pergunta")
+const Resposta = require("./database/Resposta")
 
 var data = new Date() // Capture a data universal
 var dataBrasilia = new Date(data.valueOf() - data.getTimezoneOffset() * 60000)
