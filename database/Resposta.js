@@ -3,7 +3,7 @@ const connection = require("./database")
 
 const Resposta = connection.define('respostas', {
     corpo:{
-        type: Sequelize.TEXT,
+        type: Sequelize.TEXT ,
         allowNull: false
     },
     perguntaId:{
@@ -13,6 +13,6 @@ const Resposta = connection.define('respostas', {
 })
 
 
-Resposta.sync({force: false}).then(() =>{})
+Resposta.sync({force: false})
 
 module.exports = Resposta
